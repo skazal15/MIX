@@ -1,0 +1,54 @@
+Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/telegram/ext/updater.py", line 465, in _network_loop_retry
+    if not action_cb():
+  File "/usr/local/lib/python3.7/dist-packages/telegram/ext/updater.py", line 420, in polling_action_cb
+    allowed_updates=allowed_updates,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/usr/local/lib/python3.7/dist-packages/telegram/bot.py", line 135, in decorator
+    result = func(*args, **kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/telegram/bot.py", line 2639, in get_updates
+    'getUpdates', data, timeout=float(read_latency) + float(timeout), api_kwargs=api_kwargs
+  File "/usr/local/lib/python3.7/dist-packages/telegram/bot.py", line 245, in _post
+    return self.request.post(f'{self.base_url}/{endpoint}', data=data, timeout=timeout)
+  File "/usr/local/lib/python3.7/dist-packages/telegram/utils/request.py", line 354, in post
+    **urlopen_kwargs,
+  File "/usr/local/lib/python3.7/dist-packages/telegram/utils/request.py", line 276, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+Traceback (most recent call last):
+  File "robo.py", line 2, in <module>
+    from telegram.ext import Updater, CommandHandler, CallbackContext
+  File "/usr/local/lib/python3.7/dist-packages/telegram/ext/__init__.py", line 27, in <module>
+    from .jobqueue import JobQueue, Job
+  File "/usr/local/lib/python3.7/dist-packages/telegram/ext/jobqueue.py", line 27, in <module>
+    from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED, JobEvent
+  File "/usr/local/lib/python3.7/dist-packages/apscheduler/__init__.py", line 1, in <module>
+    from pkg_resources import get_distribution, DistributionNotFound
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 3238, in <module>
+    @_call_aside
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 3222, in _call_aside
+    f(*args, **kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 3251, in _initialize_master_working_set
+    working_set = WorkingSet._build_master()
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 558, in _build_master
+    ws = cls()
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 551, in __init__
+    self.add_entry(entry)
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 607, in add_entry
+    for dist in find_distributions(entry, True):
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 2060, in find_on_path
+    for dist in factory(fullpath):
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 2126, in distributions_from_metadata
+    root, entry, metadata, precedence=DEVELOP_DIST,
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 2587, in from_location
+    py_version=py_version, platform=platform, **kw
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 2985, in _reload_version
+    md_version = self._get_version()
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 2767, in _get_version
+    version = _version_from_file(lines)
+  File "/usr/local/lib/python3.7/dist-packages/pkg_resources/__init__.py", line 2550, in _version_from_file
+    version_lines = filter(is_version_line, lines)
+KeyboardInterrupt
+Exiting immediately!
