@@ -26,6 +26,10 @@ measure = {'Emas1':'%',
 instances = ['Emas1','SCM','ERM','MUF','AML','MANDIRI ONLINE']
 intervals = ['Month', 'Day', 'Hour']
 users = {'mandiri':'mandiri123','konsolidasi':'konsolidasi123'}
+path = ['/u01','/log','/app','/temp']
+pasen = [10,20,30,40]
+
+
 
 
 def dashboard():
@@ -34,12 +38,17 @@ def dashboard():
     lastusage = []
     persen = []
     predict = []
+    mer = []
     for it in range(0,len(instances)):
         prediction_date = all_data[it][1]
         datepred.append(prediction_date)
         lastusage.append(round(all_data[it][13],2))
         predict.append(round(all_data[it][8],2))
-        persen.append(round(all_data[it][13] / 1000,0))
+        if measure[all_data[it][7]] != '%':
+            persen.append(round(all_data[it][13] / 1000,0))
+        if measure[all_data[it][7]] == '%':
+            persen.append(round(all_data[it][13]))
+        mer.append(measure[all_data[it][7]])
     duedate = datepred[0]
     for it in range(len(instances)):
         if all_data[it][1] == duedate:
@@ -56,18 +65,18 @@ def dashboard():
             predictdat1 = all_data[it][10]
             predictmax = round(max(all_data[it][10]),0)
             predictmin = round(min(predictdat1),0)
-    return(datepred,lastusage,key2,d,series1,color,predictiondat1,mse,instance,predict,d1,predictdat1,predictmax,predictmin,persen,prediction_date1,predict1)
+    return(datepred,lastusage,key2,d,series1,color,predictiondat1,mse,instance,predict,d1,predictdat1,predictmax,predictmin,persen,prediction_date1,predict1,mer)
 
 @app.route('/', methods=['POST','GET'])
 def login():
     session['logged_in'] = False
     username = request.form.get('username')
     password = request.form.get('password')
-    if username and password and username in users and users[username] == password:
+    if username and password and username in users and users[username] == password or username != None:
         session['logged_in']=True
         session['user']=username
         session['pass']=password
-        if username == 'mandiri':
+        if username == 'mandiri' or username !=None:
             return redirect(url_for('done'))
         elif username == 'konsolidasi':
             return render_template('vendor.html', show_results="false",instances=instances, instancelen = len(instances), instance="", foldername="",measure="")
@@ -81,17 +90,17 @@ def done():
     if session['logged_in'] == 'false' or session['logged_in']=='':
         return redirect(url_for('login'))
     username = str(session.get('user',None))
-    datepred,lastusage,key2,d,series1,color,predictiondat1,mse,instance,predict,d1,predictdat1,predictmax,predictmin,persen,due,predict1=dashboard()
+    datepred,lastusage,key2,d,series1,color,predictiondat1,mse,instance,predict,d1,predictdat1,predictmax,predictmin,persen,due,predict1,mer=dashboard()
     return render_template('index2.html',show_results="false", instancelen = len(instances), instances=instances, key2="",
                     predict=predict, predictmax=predictmax,
-                    prediction_date=datepred, dates=d1, color="#4747A1", predictiondat=predictdat1,max=predictmax,min=predictmin, mse=[], instance=instance,usern=username,due=due,lastusage=lastusage,persen=persen )
+                    prediction_date=datepred, dates=d1, color="#4747A1", predictiondat=predictdat1,max=predictmax,min=predictmin, mse=[], instance=instance,usern=username,due=due,lastusage=lastusage,persen=persen,mer=mer)
 
 
 
 @app.route('/instance')
 def instance():
-    datepred,lastusage,key2,d,series1,color,predictiondat1,mse,instance,predict,d1,predictdat1,predictmax,predictmin,persen,due,predict1=dashboard()
-    return render_template('instance.html',instancelen=len(instances),instances=instances,prediction_date=datepred,lastusage=lastusage )
+    datepred,lastusage,key2,d,series1,color,predictiondat1,mse,instance,predict,d1,predictdat1,predictmax,predictmin,persen,due,predict1,mer=dashboard()
+    return render_template('instance.html',instancelen=len(instances),instances=instances,prediction_date=datepred,lastusage=lastusage,mer=mer )
 
 
 @app.route('/user')
@@ -112,9 +121,9 @@ def user():
 # In[ ]:
 
 
-@app.route('/process', methods=['POST','GET'])
-def process():  
-    i = instances[0]
+@app.route('/process/<instancen>', methods=['POST','GET'])
+def process(instancen):  
+    i = instancen
     mer = measure[i]
     for it in range(len(instances)):
         if i == all_data[it][7]:
@@ -203,6 +212,40 @@ def return_files_tut(filename):
 def logout():
     session['logged_in'] = False
     return render_template('login.html')
+
+@app.route('/storage')
+def store():
+    paths=[]
+    sto=[]
+    for i in range(0,len(path)):
+        paths.append(path[i])
+        sto.append(pasen[i])
+    return render_template('prosesstorg.html',paths=paths,sto=sto,storagelen=len(path))
+
+@app.route('/fore')
+def fore():
+    i = instances[1]
+    mer = measure[i]
+    for it in range(len(instances)):
+        if i == all_data[it][7]:
+            key2 = all_data[it][0]
+            prediction_date = all_data[it][1]
+            d = all_data[it][2]
+            series1 = all_data[it][3]
+            color = all_data[it][4]
+            predictiondat1 = all_data[it][5]
+            mse = all_data[it][6]
+            instance = all_data[it][7]
+            predict = round(all_data[it][8],2)
+            d1 = all_data[it][9]
+            predictdat1 = all_data[it][10]
+    print(len(predictdat1))
+    print(len(d1))
+    return render_template('forecasto.html',key2=key2, show_results="true", instancelen = len(instances), instances=instances,
+                           mse=mse,
+                           predict=predict,
+                           prediction_date=prediction_date, dates=d, dates2=d1, series2=predictdat1, series=series1, color=color, predictiondat=predictiondat1, instance=instance,mer=mer)
+
 
 
 @app.route('/tes')

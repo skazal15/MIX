@@ -26,8 +26,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="/"><img src="/static/images/logo.svg" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="/"><img src="/static/images/logo.png" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="/static/images/logo.svg" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/static/images/logo.png" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-auto" type="button" data-toggle="minimize">
@@ -82,162 +82,113 @@
       </nav>
       <!-- partial -->
       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="row">
-                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome {{usern}}</h3>
-                  <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">0 unread alerts!</span></h6>
-                </div>
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Search -->
+            <h3>Details Data</h3>
+
+
+        </nav>
+
+        <div class="row">
+          <div class="col-md-12 grid-margin stretch-card">
+            <div class="card shadow">
+              <div class="card-body">
+                <p class="card-title">Perbandingan data Utilisasi & data model untuk {{instance}}</p>
+                <canvas id="order-chart"></canvas>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin transparent">
-              <div class="row">
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-tale" style="cursor:pointer;">
-                    <div class="card-body">
-                      <p class="mb-4">Total Instances Server</p>
-                      <p class="fs-30 mb-2">{{instancelen}}</p>
-                      <p></p><a href="/instance">Click for Details</a></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-dark-blue" style="cursor:pointer;">
-                    <div class="card-body">
-                      <p class="mb-4">Nearest Deadline Server</p>
-                      <p class="fs-30 mb-2">{{due}}</p>
-                      <p><a href="/process">for Details</a></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Nearest Prediction</p>
-                  <h4 class="font-weight-10">Instance yang diperkirakan akan mencapai threshold dalam waktu dekat adalah: {{instance}}</h4>
-                  <div class="d-flex flex-wrap mb-5">
-                    <div class="mr-5 mt-3">
-                      <p class="text-muted">MAX value</p>
-                      <h3 class="text-primary fs-30 font-weight-medium">{{predictmax}}%</h3>
-                    </div>
-                    <div class="mr-5 mt-3">
-                      <p class="text-muted">Date threshold prediction</p>
-                      <h3 class="text-primary fs-30 font-weight-medium">{{due}}</h3>
-                    </div> 
-                  </div>
-                  <canvas id="order-chart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card position-relative">
-                <div class="card-body">
-                  <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
-                    <div class="carousel-inner">
-                      <div class="carousel-item active">
-                        <div class="row">
-                          <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                            <div class="ml-xl-4 mt-3">
-                            <p class="card-title">Summary reports</p>
-                              <h1 class="text-primary">{{instancelen}}</h1>
-                              <h3 class="font-weight-500 mb-xl-4 text-primary">total Instances server</h3>
-                              <p class="mb-2 mb-xl-0">The total number of latest utilisation storage server</p>
-                            </div>  
-                            </div>
-                          <div class="col-md-12 col-xl-9">
-                            <div class="row">
-                              <div class="col-md-12 border-right">
-                                <div class="table-responsive mb-3 mb-md-0 mt-3">
-                                  <table class="table table-borderless report-table">
-                                    {% for i in range(0,instancelen) %}
-                                    <tr>
-                                        <td class="text-muted">{{instances[i]}}</td>
-                                        {% if lastusage[i] > 0 %}
-                                        <td class="w-100 px-0">
-                                          <div>{{persen[i]}} %</div>
-                                            <div class="progress progress-md mx-4">
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width:{{persen[i]}}%" aria-valuenow={{persen[i]}} aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td><h5 class="font-weight-bold mb-0">{{lastusage[i]}} {{mer[i]}}</h5></td>
-                                        {% endif %}
-                                    </tr>
-                                    {% endfor %}
-                                  </table>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <a class="carousel-control-prev" href="#detailedReports" role="button" data-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#detailedReports" role="button" data-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Details Server</p>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="table-responsive">
-                        <table id="table" class="display expandable-table" style="width:100%">
-                          <thead>
-                            <tr>
-                              <th>Instance Name</th>
-                              <th></th>
-                              <th>Usage</th>
-                              <th></th>
-                              <th>Usage Prediction</th>
-                              <th></th>
-                              <th>Due date threshold</th>
-                              <th></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {% for i in range(0,instancelen)%}
-                            <tr>
-                                <td>{{instances[i]}}</td>
-                                <td></td>
-                                <td>{{lastusage[i]}}</td>
-                                <td></td>
-                                <td>{{predict[i]}}</td>
-                                <td></td>
-                                <td>{{prediction_date[i]}}</td>
-                                <td></td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                      </table>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </div>
-              </div>
-            </div>
         </div>
+
+        <div class="row">
+             <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Tingkat Error Data Model </h1>
+                <p class="mb-4">Menunjukan tingkat error forecasting </p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Test Evaluation</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Tingkat Error</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ key2 }}</td>
+                                    <td>{{ mse }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+          <div class="row">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Prediction Results for {{instance}}</h1>
+                <p class="mb-4">The following table shows the original value of {{instance}} along with its
+                    predicted {{instance}} value on <br><b> {{ prediction_date }}.</b></p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Predictions</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Predict Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ key2 }}</td>
+                                    <td>{{ predict }} {{mer}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card shadow">
+                    <div class="card-body">
+                      <p class="card-title">Prediction Growth for {{instance}}</p>
+                      <canvas id="order-chart-dark"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+
+
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
@@ -273,6 +224,7 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="/static/js/Chart.roundedBarCharts.js"></script>
+  <!-- End custom js for this page-->
   <script>
     (function($) {
   'use strict';
@@ -282,7 +234,7 @@
         labels: {{ dates|safe }},
         datasets: [
           {
-            data: [{% for item in predictiondat %}
+            data: [{% for item in series[0] %}
                     {{item}},
                    {% endfor %}],
             borderColor: [
@@ -290,7 +242,18 @@
             ],
             borderWidth: 2,
             fill: false,
-            label: "Prediction"
+            label: "Data"
+          },
+          {
+            data: [{% for item in predictiondat[0] %}
+                    {{item}},
+                   {% endfor %}],
+            borderColor: [
+              {{ color | tojson}}
+            ],
+            borderWidth: 2,
+            fill: false,
+            label: "Predict"
           }
         ]
       };
@@ -315,12 +278,7 @@
               drawBorder: false,
               color: 'transparent',
               zeroLineColor: '#eeeeee'
-            },
-            scaleLabel: {
-              display: true,
-              labelString: "DAY",
-              fontColor: "Blue"
-      }
+            }
           }],
           yAxes: [{
             display: true,
@@ -338,16 +296,11 @@
               display: true,
               color:"#f2f2f2",
               drawBorder: false
-            },
-            scaleLabel: {
-              display: true,
-              labelString: "%",
-              fontColor: "green"
             }
           }]
         },
         legend: {
-          display: true
+          display: false
         },
         tooltips: {
           enabled: true
@@ -370,10 +323,10 @@
     }
     if ($("#order-chart-dark").length) {
       var areaData = {
-        labels: {{ dates|safe }},
+        labels: {{ dates2|safe }},
         datasets: [
           {
-            data: [{% for item in predictiondat %}
+            data: [{% for item in series2 %}
                     {{item}},
                    {% endfor %}],
             borderColor: [
@@ -381,16 +334,7 @@
             ],
             borderWidth: 2,
             fill: false,
-            label: "Orders"
-          },
-          {
-            data: [400, 450, 410, 500, 480, 600, 450, 550, 460, "560", "450", "700", "450", "640", "550", "650", "400", "850", "800"],
-            borderColor: [
-              '#F09397'
-            ],
-            borderWidth: 2,
-            fill: false,
-            label: "Downloads"
+            label: "Predict"
           }
         ]
       };
@@ -408,13 +352,13 @@
             ticks: {
               display: true,
               padding: 10,
-              fontColor:"#fff"
+              fontColor:"#6C7383"
             },
             gridLines: {
               display: false,
               drawBorder: false,
               color: 'transparent',
-              zeroLineColor: '#575757'
+              zeroLineColor: '#eeeeee'
             }
           }],
           yAxes: [{
@@ -427,11 +371,11 @@
               min: 10,
               max: 100,
               padding: 18,
-              fontColor:"#fff"
+              fontColor:"#6C7383"
             },
             gridLines: {
               display: true,
-              color:"#575757",
+              color:"#f2f2f2",
               drawBorder: false
             }
           }]
@@ -466,14 +410,14 @@
           labels: {{ dates|safe }},
         datasets: [
           {
-            data: [{% for item in predictiondat %}
+            data: [{% for item in predictiondat[0] %}
                     {{item}},
                    {% endfor %}],
               backgroundColor: '#98BDFF'
             },
             {
               label: {{ dates|safe }},
-              data:  [{% for item in predictiondat %}
+              data:  [{% for item in predictiondat[0] %}
                     {{item}},
                    {% endfor %}],
               backgroundColor: '#4B49AC'
@@ -545,14 +489,14 @@
         labels: {{ dates|safe }},
         datasets: [
           {
-            data: [{% for item in predictiondat %}
+            data: [{% for item in predictiondat[0] %}
                     {{item}},
                    {% endfor %}],
               backgroundColor: '#98BDFF'
             },
             {
               label: {{ dates|safe }},
-              data:  [{% for item in predictiondat %}
+              data:  [{% for item in predictiondat[0] %}
                     {{item}},
                    {% endfor %}],
               backgroundColor: '#4B49AC'
@@ -620,7 +564,7 @@
       var areaData = {
         label: {{ dates|safe }},
         datasets: [{
-          data:  [{% for item in predictiondat %}
+          data:  [{% for item in predictiondat[0] %}
                     {{item}},
                    {% endfor %}],
             backgroundColor: [
@@ -971,8 +915,8 @@ $('#example tbody').on('click', 'td.details-control', function () {
   });
 })(jQuery);
   </script>
-  <!-- End custom js for this page-->
 </body>
+
 
 </html>
 

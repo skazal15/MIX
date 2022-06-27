@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="/static/vendors/feather/feather.css">
   <link rel="stylesheet" href="/static/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="/static/vendors/css/vendor.bundle.base.css">
-  
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="/static/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
@@ -83,60 +82,109 @@
       </nav>
       <!-- partial -->
       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin transparent">
-              <div class="row">
-                {%for i in range(0,instancelen)%}
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-tale" style="cursor:pointer;">
-                    <div class="card-body">
-                      <p class="mb-4">Instance</p>
-                      <p class="fs-30 mb-2">{{instances[i]}}</p>
-                      <p class="fs-8 mb-2">Type Storage:</p>
-                      <p class="fs-8 mb-4"><a data-toggle="popover" data-placement="right" data-content="LUN ID:123">- HDS</a></p>
-                      <p class="fs-8 mb-4"><a data-toggle="popover" data-placement="right" data-content="LUN ID:220">- XP7</a></p>
-                      <a href="/process/{{instances[i]}}"><p>Click for Details</p></a>
-                      <a href="/storage"><p>Click for Details Storage</p></a>
-                      <a href="/return-files/{{instances[i]}}">Download</a>
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Search -->
+            <h3>Details Storage</h3>
+
+
+        </nav>
+
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card position-relative">
+                <div class="card-body">
+                  <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <div class="row">
+                          <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
+                            <div class="ml-xl-4 mt-3">
+                            <p class="card-title">Detail Path for HDS Storage</p>
+                              <h1 class="text-primary">{{storagelen}}</h1>
+                              <h3 class="font-weight-500 mb-xl-4 text-primary">total Path</h3>
+                              <p class="mb-2 mb-xl-0">The total number of latest utilisation storage in path storage</p>
+                            </div>  
+                            </div>
+                          <div class="col-md-12 col-xl-9">
+                            <div class="row">
+                              <div class="col-md-12 border-right">
+                                <div class="table-responsive mb-3 mb-md-0 mt-3">
+                                  <table class="table table-borderless report-table">
+                                    {% for i in range(0,storagelen) %}
+                                    <tr>
+                                        <td class="text-muted"><a href="/fore">{{paths[i]}}</a></td>
+                                        <td class="w-100 px-0">
+                                          <div>{{sto[i]}} %</div>
+                                            <div class="progress progress-md mx-4">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width:{{sto[i]}}%" aria-valuenow={{sto[i]}} aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td><h5 class="font-weight-bold mb-0">{{sto[i]}} %</h5></td>
+                                    </tr>
+                                    {% endfor %}
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row">
+                          <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
+                            <div class="ml-xl-4 mt-3">
+                            <p class="card-title">Detail Path for XP7 Storage</p>
+                              <h1 class="text-primary">{{storagelen}}</h1>
+                              <h3 class="font-weight-500 mb-xl-4 text-primary">total Path</h3>
+                              <p class="mb-2 mb-xl-0">The total number of latest utilisation storage in path storage</p>
+                            </div>  
+                            </div>
+                          <div class="col-md-12 col-xl-9">
+                            <div class="row">
+                              <div class="col-md-12 border-right">
+                                <div class="table-responsive mb-3 mb-md-0 mt-3">
+                                  <table class="table table-borderless report-table">
+                                    {% for i in range(0,storagelen) %}
+                                    <tr>
+                                        <td class="text-muted">{{paths[i]}}</td>
+                                        <td class="w-100 px-0">
+                                          <div>{{sto[i]}} %</div>
+                                            <div class="progress progress-md mx-4">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width:{{sto[i]}}%" aria-valuenow={{sto[i]}} aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td><h5 class="font-weight-bold mb-0">{{sto[i]}} %</h5></td>
+                                    </tr>
+                                    {% endfor %}
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    <a class="carousel-control-prev" href="#detailedReports" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#detailedReports" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
                   </div>
                 </div>
-                {% endfor %}
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Details Server</p>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="table-responsive">
-                        <input type="text" id="mySearch" onkeyup="myFunc()" placeholder="Search for storage"/>
-                        <table id="example" class="display expandable-table" style="width:100%">
-                          <thead>
-                            <tr>
-                              <th>Instance Name</th>
-                              <th></th>
-                              <th>Usage</th>
-                              <th></th>
-                              <th>Tipe Storage</th>
-                              <th></th>
-                              <th>Due date threshold</th>
-                              <th></th>
-                            </tr>
-                          </thead>
-                      </table>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </div>
-              </div>
-            </div>             
-        </div>
+            
+
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
@@ -157,6 +205,7 @@
   <script src="/static/vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
+  <script src="/static/vendors/chart.js/Chart.min.js"></script>
   <script src="/static/vendors/datatables.net/jquery.dataTables.js"></script>
   <script src="/static/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
   <script src="/static/js/dataTables.select.min.js"></script>
@@ -172,31 +221,7 @@
   <!-- Custom js for this page-->
   <script src="/static/js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
-  <script>
-    function myFunction() {
-      var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("mySearch");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("example");
-      tr = table.getElementsByTagName("tr");
-      for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[4];
-        if (td) {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }       
-      }
-    }
-    </script>
-    <script>
-      $(document).ready(function(){
-          $('[data-toggle="popover"]').popover();   
-      });
-      </script>
+  
 </body>
 
 
