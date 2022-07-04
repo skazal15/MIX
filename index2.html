@@ -121,6 +121,49 @@
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
+                  <p class="card-title">Details Server Top Usage</p>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="table-responsive">
+                        <table id="table" class="display expandable-table" style="width:100%">
+                          <thead>
+                            <tr>
+                              <th>Instance Name</th>
+                              <th></th>
+                              <th>Usage</th>
+                              <th></th>
+                              <th>Usage Prediction</th>
+                              <th></th>
+                              <th>Due date threshold</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for i in range(0,instancelen)%}
+                            <tr>
+                                <td>{{instances[i]}}</td>
+                                <td></td>
+                                <td>{{lastusage[i]}}</td>
+                                <td></td>
+                                <td>{{predict[i]}}</td>
+                                <td></td>
+                                <td>{{prediction_date[i]}}</td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
                   <p class="card-title">Nearest Prediction</p>
                   <h4 class="font-weight-10">Instance yang diperkirakan akan mencapai threshold dalam waktu dekat adalah: {{instance}}</h4>
                   <div class="d-flex flex-wrap mb-5">
